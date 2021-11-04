@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stack>
 #include <sstream>
+#include<windows.h>
 #include "SymbolSetAndPriority.h"
 #include "CharToString.h"
 #include "FunctionParaSettings.h"
@@ -146,6 +147,10 @@ stack<string> MidexToPreex::MiddleexToPrevex(string& midex) {
 				double NewchangeS;
 				if (index> ArraySize)
 				{
+					string WariningInfo = "出现了数组越界的情况，也有可能是主界面值还未加载出来或对应输入框未赋值，请检查数据库或点击输入框输入对应值后重试！\n出现提示的表达式或数组为:";
+					WariningInfo.append(midex);
+					WariningInfo.append("\n数组计算结果将置为0");
+					MessageBox(NULL, WariningInfo.c_str(), "Warning", MB_OK);
 					NewchangeS = 0;
 				}
 				else

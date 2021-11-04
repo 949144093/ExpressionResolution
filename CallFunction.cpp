@@ -1,6 +1,9 @@
 #include "CallFunction.h"
 #include "PreTreatAndStandard.h"
-
+#include<windows.h>
+#include<cstdio> 
+#include<string>
+#include<algorithm>
 //void ShowTitle() {
 //	cout << "-------------------------------------------------------------------" << endl;
 //	cout << "C++表达式解析器，支持整数，小数四则运算，逻辑运算，函数调用顺序解析" << endl;
@@ -18,7 +21,7 @@ double CallFunction::callFunction(string expressionStrng)
 	//SuffixFunctionEva SFE;
 	string a;
 	PreTreatAndStandard PTAS;
-
+	//MessageBox(NULL, "对话框测试", "测试标题", MB_OK);
 	a = expressionStrng;
 	if (a == "\n" || a == " " || a == "\t" || a == "")
 	{
@@ -37,7 +40,10 @@ double CallFunction::callFunction(string expressionStrng)
 	}
 	if (!valid)//如果字符不合法，提示错误并重新输入
 	{
-		cout << "语法错误，请检查是否输入了中文字符，例如中文括号" << endl;
+		//cout << "语法错误，请检查是否输入了中文字符，例如中文括号" << endl;
+		string ErrorInfo = "语法错误，请检查是否输入了中文字符，例如中文括号!\n出现错误的表达式为:";
+		ErrorInfo.append(a);
+		MessageBox(NULL, ErrorInfo.c_str(), "Error", MB_OK);
 		return 0;
 	}
 
@@ -52,12 +58,15 @@ double CallFunction::callFunction(string expressionStrng)
 				changestr << a[j];
 			}
 			string AttrName = changestr.str();
-
+			transform(AttrName.begin(),AttrName.end(),AttrName.begin(),::toupper);
 			string AttrType = FunctionParaSettings::FindType[AttrName];
 
 			if (AttrType == "Array" && a[i] != '[' || AttrType == "Function" && a[i] != '(')
 			{
-				cout << "需进行语法转换预处理" << endl;
+				//cout << "需进行语法转换预处理" << endl;
+				string WariningInfo = "出现了语法转换预处理情况，请检查函数调用后是否多加了空格！\n出现错误的表达式为:";
+				WariningInfo.append(a);
+				MessageBox(NULL, WariningInfo.c_str(), "Warning", MB_OK);
 				a = PTAS.InputNormalizationg(a);
 				break;
 			}
@@ -80,7 +89,10 @@ double CallFunction::callFunction(string expressionStrng)
 	}
 	if (leftpare != rightpare)
 	{
-		cout << "括号不匹配，请检查你的输入" << endl;
+		//cout << "括号不匹配，请检查你的输入" << endl;
+		string ErrorInfo = "括号不匹配，请检查你的输入!\n出现错误的表达式为:";
+		ErrorInfo.append(a);
+		MessageBox(NULL, ErrorInfo.c_str(), "Error", MB_OK);
 		return 0;
 	}
 

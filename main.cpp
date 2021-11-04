@@ -78,7 +78,7 @@ int main() {
 	CallFunction CF;
 
 
-	cout << CF.callFunction("cos(SuppParas[1])")<<endl;
+	cout << CF.callFunction("SuppParas[50]")<<endl;
 
 
 	/*
