@@ -13,6 +13,9 @@ using namespace std;
 继续往后扫描，直到结束
 最后输出s3，即为我们需要的结果
 example:输入max(abs(random(-9,-1)),random(1,9)),输出-9, -1, random, (), abs, (), 1, 9, random, (), max, ()
+
+int((OutBore+200)/2)
+int((200+OutBore)/2)
 */
 
 stack<string> FunctionExpression::FuncExpression(string& midex) 
@@ -29,19 +32,38 @@ stack<string> FunctionExpression::FuncExpression(string& midex)
 		//max(abs(random(func1, -10)), random(1, func2))
 		if ((midex[i] >= 'a' && midex[i] <= 'z') || (midex[i] >= 'A' && midex[i] <= 'Z'))
 		{
-
 			ostringstream strtmp;  //建立流来保存string
-			//若是函数名 通过结束遇到的符号判断他是函数调用 还是属性方法 如果是函数压入s1 若是属性压入s3
-			for (int j = i; midex[j] != '(' &&midex[j]!=','&&midex[j]!=')'&& j < midex_len; j++, i++)
+			if (s2.size() > s1.size())
 			{
-				strtmp << midex[j];
+				for (int k = 0; k < s2.size() - s1.size(); k++)
+				{
+					strtmp << '(';
+				}
+			}
+			//若是函数名 通过结束遇到的符号判断他是函数调用 还是属性方法 如果是函数压入s1 若是属性压入s3
+			for (int j = i; midex[j] != '(' &&midex[j]!=','&& j < midex_len; j++, i++)
+			{
+				if (midex[j]==')'&&s1.size()==s2.size())
+				{
+					break;
+				}
+				else if(midex[j] == ')' && s1.size() != s2.size())
+				{
+					strtmp << midex[j];
+					s2.pop();
+				}
+				else
+				{
+					strtmp << midex[j];
+				}
+				
 			}
 			if (midex[i]=='(')
 			{
 				string a = strtmp.str();
 				s1.push(a);  //将完整数据压入s1
 			}
-			else if (midex[i]==','||midex[i]==')')
+			else if (midex[i]==','||(midex[i]==')'))
 			{
 				string a = strtmp.str();
 				s3.push(a); //压入s3
@@ -62,9 +84,30 @@ stack<string> FunctionExpression::FuncExpression(string& midex)
 		else if ((midex[i] >= '0' && midex[i] <= '9') || midex[i] == '-') //若为正数或者负号 往后扫描到下一个逗号或者右括号为止 转为string压入s3
 		{
 			ostringstream numtmp;
-			for (int j = i; midex[j] != ',' && midex[j] != ')'; j++, i++)
+			if (s2.size() > s1.size())
 			{
-				numtmp << midex[j];
+				for (int k = 0; k < s2.size() - s1.size(); k++)
+				{
+					numtmp << '(';
+				}
+			}
+			for (int j = i; midex[j] != ','; j++, i++)
+			{
+				if (midex[j] == ')' && s1.size() == s2.size())
+				{
+					break;
+				}
+				else if (midex[j] == ')' && s1.size() != s2.size())
+				{
+					numtmp << midex[j];
+					s2.pop();
+				}
+				else
+				{
+					numtmp << midex[j];
+				}
+
+
 			}
 			i--;//多加了一次 需要减回来
 			string b = numtmp.str();

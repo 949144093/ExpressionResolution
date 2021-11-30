@@ -1,8 +1,11 @@
+#include<sstream>
+#include<iostream>
+#include<cstdio> 
+#include<windows.h>
 #include "SuffixFunctionEva.h"
 #include "FunctionParaSettings.h"
 #include "FunCaculate.h"
 #include "CallFunction.h"
-#include<sstream>
 //建立2个栈，分别为参数栈，方法栈，后缀表达式从左往右扫描，遇到参数入栈s1,
 //遇到方法，从settings里查询方法需要一个参数，然后从s1中取出对应个数的参数并进行运算，将运算结果作为新的参数存回s1
 double SuffixFunctionEva::SuffixFuncEva(stack<string> s)
@@ -151,8 +154,16 @@ double SuffixFunctionEva::SuffixFuncEva(stack<string> s)
 					//double funValue = FPS.StringNameToArray[nameStr.str()][index];
 					double ArraySize = FunctionParaSettings::StringNameToArray[nameStr.str()].size();
 					double funValue;
+					//判断数组是否越界
 					if (index > ArraySize)
 					{
+						string WariningInfo = "出现了数组越界的情况，也有可能是主界面值还未加载出来或对应输入框未赋值，请检查数据库或点击输入框输入对应值后重试！\n出现提示的表达式或数组为:";
+						WariningInfo.append(nameStr.str());
+						WariningInfo.append("[");
+						WariningInfo.append(to_string(index));
+						WariningInfo.append("]");
+						WariningInfo.append("\n数组计算结果将置为0");
+						MessageBox(NULL, WariningInfo.c_str(), "Warning", MB_OK);
 						funValue = 0;
 					}
 					else

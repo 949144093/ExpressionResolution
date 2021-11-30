@@ -29,7 +29,7 @@ int main() {
 	double func1 = -50;
 	double func2 = 10;
 	double func = 20;
-	double OFFS = -5;
+	double OutBore = 50.2;
 	double RodBore = 70;
 	char G = 'G';
 
@@ -64,7 +64,7 @@ int main() {
 	FunctionParaSettings::AddAtrr(func1, "func1");
 	FunctionParaSettings::AddAtrr(func2, "func2");
 	FunctionParaSettings::AddAtrr(func, "func");
-	FunctionParaSettings::AddAtrr(OFFS, "OFFS");
+	FunctionParaSettings::AddAtrr(OutBore, "OutBore");
 	FunctionParaSettings::AddAtrr(RodBore, "RodBore");
 	FunctionParaSettings::AddAtrr(G, "G");
 	FunctionParaSettings::AddAtrr(M_PI, "PI");
@@ -78,7 +78,7 @@ int main() {
 	CallFunction CF;
 
 
-	cout << CF.callFunction("cos(SuppParas[1])")<<endl;
+	cout << CF.callFunction("max(int((OutBore+20)/2),40)")<<endl;
 
 
 	/*
